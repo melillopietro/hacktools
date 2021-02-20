@@ -35,8 +35,6 @@
 - Jammer
 
 
-
-
 +---------------------------+
 |                           |
 |    PROFILAZIONE UTENTE    |
@@ -51,4 +49,41 @@ Database locale (csv -> database)
 - Login
     - Controllo (3 volte utente blocca)
     - Cambio password
+
+
++---------------------------+
+|                           |
+|           MENU            |
+|                           |
++---------------------------+
+
+- Utente
+    - Diagnostica
+        - Check internet connection
+        - Speed test
+        - Nmap
+        - Netcut
+        - Jumper DNS
+        
+
+
+
+
+    - Permessi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
