@@ -9,7 +9,7 @@
 - Olda
 - Viero
 - Gianmarco
-- Daniel
+- Daniel (Admin)
 - Pesola
 
 
