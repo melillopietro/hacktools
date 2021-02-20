@@ -20,19 +20,10 @@
 +---------------------------+
 
 - Verificatore di email
-- Virustotal
-- Whois
-- AbuseIPAD
-- Ip void
-- Whatsmyip
 - Nessus
 - Snort
 - Possibilita di cerare un utente e password -> reset password/email / verifica due fattori
-- Hashchecker
 - Generatore di password in base agli interessi
-- Jumper DNS
-- Netcut
-- Jammer
 
 
 +---------------------------+
@@ -64,9 +55,16 @@ Database locale (csv -> database)
         - Nmap
         - Netcut
         - Jumper DNS
-        
-
-
+        - StoreDB
+    - Whois
+        - Whois domain tool
+        - AbuseIPDB
+        - IPVoid
+        - StoreDB
+    - Hash
+        - Hash checker
+        - Hash submition (VirusTotal - HybridAnalisys)
+        - Down detector
 
 
     - Permessi
