@@ -3,9 +3,7 @@
 |         PROGETTO          |
 |                           |
 +---------------------------+
-
-Componenti:
-
+ 
 - Pietro
 - Nicholas
 - Olda
@@ -31,3 +29,4 @@ Componenti:
 - snort
 - possibilita di cerare un utente e password -> reset password/email / verifica due fattori
 - hashchecker
+- generatore di password in base agli interessi
