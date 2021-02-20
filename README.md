@@ -19,9 +19,6 @@
 |                           |
 +---------------------------+
 
-- Verificatore di email
-- Nessus
-- Snort
 - Possibilita di cerare un utente e password -> reset password/email / verifica due fattori
 - Generatore di password in base agli interessi
 
@@ -56,17 +53,23 @@ Database locale (csv -> database)
         - Netcut
         - Jumper DNS
         - StoreDB
+        
     - Whois
         - Whois domain tool
         - AbuseIPDB
         - IPVoid
         - StoreDB
+        
     - Hash
         - Hash checker
         - Hash submition (VirusTotal - HybridAnalisys)
         - Down detector
-
-
+        
+    - Mail
+        - Verificatore di mail
+        - How strong is my password
+        - Mx toolbox
+        
     - Permessi
 
 
