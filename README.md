@@ -1,15 +1,9 @@
-# Hacktools
-
-![Hacktools ](https://assets.victorinox.com/mediahub/39710/560Wx490H/SAK_1_3713__S1.jpg)
-
 +---------------------------+
 |                           |
 |         PROGETTO          |
 |                           |
 +---------------------------+
-
-Componenti:
-
+ 
 - Pietro
 - Nicholas
 - Olda
@@ -25,12 +19,14 @@ Componenti:
 |                           |
 +---------------------------+
 
-Verificatore di email
-virustotal
-whois
-abuseIPAD
-ip void
-whatsmyip
-nessus
-snort
-possibilita di cerare un utente e password -> reset password/email / verifica due fattori
+- Verificatore di email
+- Virustotal
+- Whois
+- AbuseIPAD
+- Ip void
+- Whatsmyip
+- Nessus
+- Snort
+- Possibilita di cerare un utente e password -> reset password/email / verifica due fattori
+- Hashchecker
+- Generatore di password in base agli interessi
