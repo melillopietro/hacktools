@@ -37,6 +37,7 @@ Database locale (csv -> database)
 - Login
     - Controllo (3 volte utente blocca)
     - Cambio password
+    - Cambio email
 
 
 +---------------------------+
