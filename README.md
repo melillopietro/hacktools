@@ -5,13 +5,13 @@
 +---------------------------+
  
 - Pietro
-- Nicholas
+- Nicholas (admin)
 - Olda
 - Viero
 - Gianmarco
-- Daniel (Admin)
-- Pesola
-
+- Daniel
+- Luca
+- Marco
 
 +---------------------------+
 |                           |
@@ -19,7 +19,6 @@
 |                           |
 +---------------------------+
 
-- Possibilita di cerare un utente e password -> reset password/email / verifica due fattori
 - Generatore di password in base agli interessi
 
 
