@@ -1,13 +1,5 @@
 #! /usr/bin/python3.9
 
-############################################
-#                                          #
-#       Rifare crittografia (debole)       #
-#       Recupero password                  #
-#       2FA                                #
-#                                          #
-############################################
-
 import subprocess
 import csv
 
@@ -21,6 +13,7 @@ data = {"id":"",
 def updateCSV():
     reader = csv.reader(open("userDB.csv"), delimiter='|')
     lines=list(reader)
+    #print(lines)
     for i in range (len(lines)):
         #print(lines[i][1])
         if lines[i][1] == data["username"]:
@@ -30,10 +23,11 @@ def updateCSV():
             lines[i][5] = data["firstTime"]
             writer = csv.writer(open('userDB.csv', 'w'), delimiter='|')
             writer.writerows(lines)
-            ##############################
-            #    DA ERRORE MA FUNZIONA   #
-            ##############################
-    print("Update settings successful!")
+            #########################################
+            #    DA ERRORE OGNITANTO MA FUNZIONA    #
+            #########################################
+    #print("Update settings successful!")
+
 
 def updateData():
     with open('userDB.csv', newline='\n') as csvfile:
@@ -45,6 +39,74 @@ def updateData():
                 data["block"] = row["block"]
                 data["firstTime"] = row["firstTime"]
                 writer.writerow({})
+
+
+def passwordStrength(password):
+    from password_strength import PasswordStats
+    stats = PasswordStats(password)
+    strength = round(stats.strength(), 3)
+    x = "Password strength [{}/0.999] -> ".format(strength)
+    if 0.0 <= strength and strength <= 0.333:
+        x += "[weak]"
+    elif 0.334 <= strength and strength <= 0.666:
+        x += "[medium]"
+    else:
+        x += "[strong]"
+    print(x)
+
+
+def sendMail(email, opzione):
+    # Opzione
+    # 0) mail register()
+    # 1) mail forgotPassword()
+    # 2) mail changePassword()
+
+    import smtplib
+    import random
+
+    emailTool = "hacktoolits@gmail.com" #YOUR EMAIL
+    passwordTool = "efwhdqqmqelsghsy" #https://myaccount.google.com/apppasswords
+
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.ehlo()  # Identifica noi stessi al mailserver
+        smtp.starttls()  # Cript del traffico
+        smtp.ehlo()
+        smtp.login(emailTool, passwordTool)  # Login in gmail
+
+        code = ""
+        for i in range(5):
+            code += chr(random.randint(33, 126))
+
+        if opzione == 0:
+            subject = "Register verification code"
+            body = "Your register verification code is: {}".format(code)
+        elif opzione == 1:
+            subject = "Forgot password verification code"
+            body = "Your forgot password verification code is: {}".format(code)
+        else:
+            subject = "Change password verification code"
+            body = "Your change password verification code is: {}".format(code)
+
+        msg = "Subject: {}\n\n{}".format(subject, body)
+
+        # esito 0 -> tutto ok
+        # esito 1 -> mail sbagliata
+        # esito 2 -> codice errato
+        esito = 0
+        try:
+            smtp.sendmail(emailTool, email, msg)
+        except:
+            esito = 1
+            return esito
+
+        verifyCode = input("Insert the code we sent you via email: ")
+
+        if code == verifyCode:
+            return esito
+        else:
+            esito = 2
+            return esito
+
 
 
 def loginRegisterMenu():
@@ -147,6 +209,10 @@ def login():
 
 
 def forgotPassword():
+    import smtplib
+    import hashlib
+    from password_strength import PasswordPolicy
+    import getpass
     subprocess.call('clear', shell=True)
     print("+-----------------------------------------------+")
     print("|                                               |")
@@ -155,14 +221,60 @@ def forgotPassword():
     print("+-----------------------------------------------+")
     print("|               FORGOT PASSWORD                 |")
     print("+-----------------------------------------------+")
+    while True:
+        username = input("Username: ")
+        email = input("Email: ")
+        controllo = 0
+        if "." in email and "@" in email:
+            reader = csv.reader(open("userDB.csv"), delimiter='|')
+            lines = list(reader)
+            for i in range(len(lines)):
+                if lines[i][1] == username and lines[i][3] == email:
+                    controllo = 1
+                    # Criteri della password
+                    policy = PasswordPolicy.from_names(
+                        length=8,  # min length: 8
+                        uppercase=1,  # need min. 1 uppercase letters
+                        numbers=1,  # need min. 1 digits
+                        special=1,  # need min. 1 special characters
+                        nonletters=1,  # need min. 1 non-letter characters (digits, specials, anything)
+                    )
+                    while True:
+                        password1 = getpass.getpass("Password must contain:\n- 8 Character\n- Number\n- Uppercase character\n- Special character\nPassword: ")
+                        if len(policy.test(password1)) == 0:
+                            # Password strength
+                            passwordStrength(password1)
+                            password2 = getpass.getpass("Confirm password: ")
+                            if password1 == password2:
+                                esito = sendMail(email,1)
+                                if esito == 0:
+                                    passwordHash = hashlib.sha256(password1.encode('utf-8')).hexdigest()
+                                    lines[i][2] = passwordHash
+                                    writer = csv.writer(open('userDB.csv', 'w'), delimiter='|')
+                                    writer.writerows(lines)
+                                    break
+                                elif esito == 1:
+                                    print("Invalid email!")
+                                else:
+                                    print("Invalid code!")
+                            else:
+                                print("Password doesn't match!")
+                        print("")
+            if controllo == 1:
+                print("Password was change successful!\n")
+                x = input("Press any key to go to login menu ")
+                login()
+            else:
+                print("Invalid credential...\n")
+        else:
+            print("Invalid email!\n")
 
 
 def register():
     import hashlib
     import getpass
     import re
-    from password_strength import PasswordPolicy, PasswordStats
-    import smtplib
+    from password_strength import PasswordPolicy
 
     subprocess.call('clear', shell=True)
     print("+-----------------------------------------------+")
@@ -204,13 +316,6 @@ def register():
     #if username in open('names.csv', 'r').read():
     #    print('Username already exists')
     #-----------------------------------------------------------------------------
-    # Controllo formale email
-    while True:
-        email = input("Email: ")
-        if "." in email and "@" in email:
-            break
-        else:
-            print("Invalid email!\n")
 
     # Criteri della password
     policy = PasswordPolicy.from_names(
@@ -224,51 +329,29 @@ def register():
         password1 = getpass.getpass("Password must contain:\n- 8 Character\n- Number\n- Uppercase character\n- Special character\nPassword: ")
         if len(policy.test(password1)) == 0:
             # Password strength
-            stats = PasswordStats(password1)
-            strength=round(stats.strength(),3)
-            x="Password strength [{}/0.999] -> ".format(strength)
-            if 0.0 <= strength and strength <= 0.333:
-                x += "[weak]"
-            elif 0.334 <= strength and strength <= 0.666:
-                x += "[medium]"
-            else:
-                x += "[strong]"
-            print(x)
+            passwordStrength(password1)
             password2 = getpass.getpass("Confirm password: ")
             if password1 == password2:
                 passwordHash = hashlib.sha256(password1.encode('utf-8')).hexdigest()
 
-                # MAIL DI CONFERMA
-                import smtplib
-                import random
+                while True:
+                    # Controllo formale email
+                    while True:
+                        email = input("Email: ")
+                        if "." in email and "@" in email:
+                            esito = sendMail(email, 0)
+                            if esito == 0:
+                                wfile = open("userDB.csv", "a")
+                                wfile.write(str(id) + "|" + username + "|" + passwordHash + "|" + email + "|0|1\n")
+                                wfile.close()
 
-                emailTool = "hacktoolits@gmail.com"
-                passwordTool = "efwhdqqmqelsghsy"
-
-                with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-                    smtp.ehlo()  # Identifica noi stessi al mailserver
-                    smtp.starttls()  # Cript del traffico
-                    smtp.ehlo()
-                    smtp.login(emailTool, passwordTool)  # Login in gmail
-
-                    code = ""
-                    for i in range(5):
-                        code += chr(random.randint(33, 126))
-
-                    subject = "Verification code"
-                    body = "Verification code: {}".format(code)
-                    msg = "Subject: {}\n\n{}".format(subject, body)
-                    smtp.sendmail(emailTool, email, msg)
-
-                    verifyCode = input("Insert the code we sent you via email: ")
-                    if code == verifyCode:
-                        wfile = open("userDB.csv", "a")
-                        wfile.write(str(id) + "|" + username + "|" + passwordHash + "|" + email + "|0|1\n")
-                        wfile.close()
-
-                        login()
-                    else:
-                        pass
+                                login()
+                            elif esito == 1:
+                                print("Invalid email!\n")
+                            else:
+                                print("Invalid code!\n")
+                        else:
+                            print("Invalid email!\n")
             else:
                 print("Password doesn't match!\n")
         else:
@@ -285,10 +368,79 @@ def settings():
     print("+-----------------------------------------------+")
     print("|                  SETTINGS                     |")
     print("+-----------------------------------------------+")
-    #print(data)
-    #print("")
     data["firstTime"] = "0"
     updateCSV()
+    print("1) Change password\n2) Back to menu\n")
+
+    # Scelta del opzione
+    while True:
+        x = input("Select option: ")
+        try:
+            x = int(x)
+        except ValueError:
+            print("Number please")
+            continue
+        if 1 <= x <= 2:
+            break
+        else:
+            print("Select a valid option")
+
+    if x == 1:
+        changePassword()
+    else:
+        mainMenu()
+
+def changePassword():
+    import hashlib
+    from password_strength import PasswordPolicy
+    import getpass
+
+    subprocess.call('clear', shell=True)
+    print("+-----------------------------------------------+")
+    print("|                                               |")
+    print("|                  HackTool                     |")
+    print("|                                               |")
+    print("+-----------------------------------------------+")
+    print("|               CHANGE PASSWORD                 |")
+    print("+-----------------------------------------------+")
+
+    while True:
+        password = getpass.getpass("Password: ")
+        passwordHash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        controllo = 0
+        reader = csv.reader(open("userDB.csv"), delimiter='|')
+        lines = list(reader)
+        for i in range(len(lines)):
+            if lines[i][1] == data["username"] and lines[i][2] == passwordHash:
+                controllo = 1
+                # Criteri della password
+                policy = PasswordPolicy.from_names(
+                    length=8,  # min length: 8
+                    uppercase=1,  # need min. 1 uppercase letters
+                    numbers=1,  # need min. 1 digits
+                    special=1,  # need min. 1 special characters
+                    nonletters=1,  # need min. 1 non-letter characters (digits, specials, anything)
+                )
+                while True:
+                    password1 = getpass.getpass("Password must contain:\n- 8 Character\n- Number\n- Uppercase character\n- Special character\nPassword: ")
+                    if len(policy.test(password1)) == 0:
+                        # Password strength
+                        passwordStrength(password1)
+                        password2 = getpass.getpass("Confirm password: ")
+                        if password1 == password2:
+                            passwordHash = hashlib.sha256(password1.encode('utf-8')).hexdigest()
+                            lines[i][2] = passwordHash
+                            writer = csv.writer(open('userDB.csv', 'w'), delimiter='|')
+                            writer.writerows(lines)
+                            break
+                        else:
+                            print("Password doesn't match!")
+                    print("")
+        if controllo == 1:
+            print("Password was change successful!\n")
+            exit()
+        else:
+            print("Invalid credential...\n")
 
 
 def mainMenu():
@@ -300,6 +452,24 @@ def mainMenu():
     print("+-----------------------------------------------+")
     print("|                    MENU                       |")
     print("+-----------------------------------------------+")
+    print("1) Settings\n2) Exit\n")
 
+    # Scelta del opzione
+    while True:
+        x = input("Select option: ")
+        try:
+            x = int(x)
+        except ValueError:
+            print("Number please")
+            continue
+        if 1 <= x <= 2:
+            break
+        else:
+            print("Select a valid option")
+
+    if x == 1:
+        settings()
+    else:
+        exit()
 
 loginRegisterMenu()
