@@ -20,6 +20,7 @@
 +---------------------------+
 
 - Generatore di password in base agli interessi
+- MAC changer
 
 
 +---------------------------+
