@@ -32,12 +32,12 @@
 Database locale (csv -> database) ✓
 - Register 
     - Hash password ✓
-    - Recupero dati (Username/password)
+    - Recupero dati (Username/password) ✓
     - 2fa
 - Login
     - Controllo (3 volte utente blocca) ✓
-    - Cambio password 
-    - Cambio email
+    - Cambio password ✓
+    - Cambio email ✓
 
 
 +---------------------------+
