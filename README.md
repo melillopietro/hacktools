@@ -7,7 +7,7 @@
 - Pietro
 - Nicholas (admin)
 - Olda
-- Viero
+- Nicolò
 - Gianmarco
 - Daniel
 - Luca
