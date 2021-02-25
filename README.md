@@ -54,6 +54,13 @@ Database locale (csv -> database) ✓
         - Netcut
         - Jumper DNS
         - StoreDB
+        - 
+     - Anonimato
+        - MAC spoofing
+        - Hostname 
+        - DNS
+        - Proxy
+        - VPN
         
     - Whois
         - Whois domain tool
