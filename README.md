@@ -68,7 +68,7 @@ Database locale (csv -> database) ✓
         - StoreDB
         
     - Hash
-        - Hash checker
+        - Hash checker ✓
         - Hash submition (VirusTotal - HybridAnalisys)
         - Down detector
         
