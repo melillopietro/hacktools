@@ -20,7 +20,6 @@
 +---------------------------+
 
 - Generatore di password in base agli interessi
-- MAC changer
 
 
 +---------------------------+
@@ -54,7 +53,7 @@ Database locale (csv -> database) ✓
         - Netcut
         - Jumper DNS
         - StoreDB
-        - 
+        
      - Anonimato
         - MAC spoofing
         - Hostname 
