@@ -23,6 +23,8 @@
 - get-Subnet
 - 3.20 lezione cervo 20210226
 - man in the middle
+- DNS Poisoning
+
 
 +---------------------------+
 |                           |
