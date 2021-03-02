@@ -13,6 +13,7 @@
 - Luca
 - Marco
 
+
 +---------------------------+
 |                           |
 |           IDEE            |
@@ -24,6 +25,8 @@
 - 3.20 lezione cervo 20210226
 - man in the middle
 - DNS Poisoning
+- Sniffer
+- Spoofer
 
 
 +---------------------------+
