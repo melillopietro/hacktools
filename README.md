@@ -22,6 +22,7 @@
 - Generatore di password in base agli interessi
 - get-Subnet
 - 3.20 lezione cervo 20210226
+- man in the middle
 
 +---------------------------+
 |                           |
@@ -64,6 +65,7 @@ Database locale (csv -> database) ✓
         
     - Whois
         - Whois domain tool
+        - Whois MAC
         - AbuseIPDB
         - IPVoid
         - StoreDB
