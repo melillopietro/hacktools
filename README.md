@@ -26,7 +26,6 @@
 - man in the middle
 - DNS Poisoning
 - Sniffer
-- Spoofer
 - SQL injection
 
 +---------------------------+
